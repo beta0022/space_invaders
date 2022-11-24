@@ -12,17 +12,23 @@
 
 </head>
 
-<body onload="onInit()" onkeydown="onKeyDown(event)">
+<body onkeydown="onKeyDown(event)">
 
     <h1>Space Invaders</h1>
 
-    <h2>Score: <span>0</span></h2>
-    
-    <div class="board"></div>
+    <button class="start-btn" onclick="onInit()">Start</button>
 
-    <div class="win">
-    <h3>You Win!</h3>
-    <button onclick="onInit()">Play Again</button>
+    <div class="start-game hide">
+        <h2>Score: <span>0</span></h2>
+        
+        <div class="board"></div>
+
+        <div class="restart-div hide">
+            <h3 class="win hide">You Win!</h3>
+            <h3 class="game-over hide">Game Over!</h3>
+            <button onclick="onInit()">Restart</button>
+        </div>
+        
     </div>
     
 

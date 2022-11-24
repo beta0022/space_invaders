@@ -6,6 +6,7 @@ const SKY = ''
 const GROUND = '-'
 const HERO = '🚀'
 const LASER = '🔺'
+const SUPER = '🟥'
 const ALIEN = '👾'
 
 const WIN_SOUND = new Audio('sound/win.wav')
@@ -25,21 +26,24 @@ var gGame = {
 function onInit() {
     console.log('Good Luck!')
 
+    gGame.isOn = true
+    gGame.aliensCount = ALIENS_ROW_COUNT * ALIENS_ROW_LENGTH
+    gGame.score = 0
+    updateScore(0)
+
     gBoard = createBoard()
     createHero(gBoard)
     createAliens(gBoard)
     renderBoard(gBoard)
 
-    gGame.isOn = true
-    gGame.score = 0
-    updateScore(0)
-
-    document.querySelector('.win').classList.add('hide')
+    document.querySelector('.start-game').classList.remove('hide')
+    document.querySelector('.start-btn').classList.add('hide')
+    document.querySelector('.restart-div').classList.add('hide')
+    document.querySelector('.game-over').classList.add('hide')
 }
 
 
 // Create and returns the board with aliens on top
-// use the functions: createCell, createHero, createAliens
 function createBoard() {
     var board = []
 
@@ -75,7 +79,8 @@ function renderBoard(board) {
 
         if(cell.gameObject === HERO) strHTML += HERO
         if(cell.gameObject === ALIEN) strHTML += ALIEN
-        if(cell.gameObject === LASER) strHTML += LASER 
+        if(cell.gameObject === LASER) strHTML += LASER
+        if(cell.gameObject === SUPER) strHTML += SUPER 
         
         strHTML += '</td>'
       }
@@ -100,21 +105,41 @@ function createCell(gameObject = null) {
 
 // position such as: {i: 2, j: 7}
 function updateCell(pos, gameObject = null) {
-
   gBoard[pos.i][pos.j].gameObject = gameObject
-    
+
   var elCell = getElCell(pos)
   elCell.innerHTML = gameObject || ''
 }
 
 
-function checkWin(){
-  
-  if (gGame.aliensCount === 0){
-    console.log('You Won!')
+function checkWin() { 
 
-    gGame.isOn = false
-    WIN_SOUND.play()
-    document.querySelector('.win').classList.remove('hide')
-  }
+  if (gGame.aliensCount !== 0) return
+
+  console.log('You Won!')
+
+  WIN_SOUND.play()
+  document.querySelector('.restart-div').classList.remove('hide')
+  document.querySelector('.win').classList.remove('hide')
+      
+  restartGame()
+}
+
+
+function gameOver() {
+  console.log('Game Over!')
+
+  GAME_OVER_SOUND.play()
+  document.querySelector('.restart-div').classList.remove('hide')
+  document.querySelector('.game-over').classList.remove('hide')
+
+  restartGame()
+}
+
+
+function restartGame(){
+
+  gGame.isOn = false
+  clearInterval(gIntervalAliens)
+  clearInterval(gIntervalLaser)
 }

@@ -15,6 +15,16 @@ h1 {
 }
 
 
+.start-btn {
+  font-size: 1.4rem;
+}
+
+
+.start-game {
+background-color: rgb(19, 18, 18);
+}
+
+
 h2 {
   font-size: 1.4rem;
 }
@@ -47,8 +57,17 @@ h2 {
 }
 
 
+.restart-div {
+  background-color:rgb(158, 156, 156);
+}
+
+
 .win {
   color:blue;
+}
+
+.game-over {
+  color:aqua
 }
 
 
