@@ -6,12 +6,12 @@ const SKY = ''
 const GROUND = '-'
 const HERO = '🚀'
 const LASER = '🔺'
-const SUPER = '🟥'
+const SUPER = '🔴'
 const ALIEN = '👾'
+const CANDY = '🍭'
 
 const WIN_SOUND = new Audio('sound/win.wav')
 const GAME_OVER_SOUND = new Audio('sound/game-over.wav')
-
 
 // Matrix of cell objects. e.g.: {type: SKY, gameObject: ALIEN}
 var gBoard
@@ -20,6 +20,7 @@ var gGame = {
     aliensCount: 0,
     score: 0,
 }
+var gIntervalCandy
 
 
 // Called when game loads
@@ -35,6 +36,8 @@ function onInit() {
     createHero(gBoard)
     createAliens(gBoard)
     renderBoard(gBoard)
+
+    gIntervalCandy = setInterval(createCandy, 10000)
 
     document.querySelector('.start-game').classList.remove('hide')
     document.querySelector('.start-btn').classList.add('hide')
@@ -80,7 +83,8 @@ function renderBoard(board) {
         if(cell.gameObject === HERO) strHTML += HERO
         if(cell.gameObject === ALIEN) strHTML += ALIEN
         if(cell.gameObject === LASER) strHTML += LASER
-        if(cell.gameObject === SUPER) strHTML += SUPER 
+        if(cell.gameObject === SUPER) strHTML += SUPER
+        if(cell.gameObject === CANDY) strHTML += CANDY 
         
         strHTML += '</td>'
       }
@@ -142,4 +146,17 @@ function restartGame(){
   gGame.isOn = false
   clearInterval(gIntervalAliens)
   clearInterval(gIntervalLaser)
+  clearInterval(gIntervalCandy)
+}
+
+
+function createCandy(){
+  var emptyCells = getEmptyCells()
+  var pos = emptyCells[getRandomIntInt(0, BOARD_SIZE-1)]
+
+  updateCell({ i: pos.i, j: pos.j }, CANDY)
+
+  setTimeout(function() {
+      updateCell({ i: pos.i, j: pos.j }, '')
+  }, 5000)
 }

@@ -8,8 +8,7 @@ var gIntervalAliens
 var gAliensTopRowIdx
 var gAliensBottomRowIdx
 var gIsRightCorner
-
-
+var gIsAlienFreeze = false
 
 function createAliens(board) {
 
@@ -26,6 +25,7 @@ function createAliens(board) {
     gAliensTopRowIdx = 0
     gAliensBottomRowIdx = ALIENS_ROW_COUNT - 1
     gIsRightCorner = false
+    gIsAlienFreeze = false
 
     gIntervalAliens = setInterval(function() {
         shiftBoardRight(board, gAliensTopRowIdx, gAliensBottomRowIdx)
@@ -34,6 +34,8 @@ function createAliens(board) {
 
 
 function shiftBoardRight(board, fromI, toI) {
+
+    if (gIsAlienFreeze) return
 
     for (var i = fromI; i <= toI; i++) {
 
@@ -64,6 +66,8 @@ function shiftBoardRight(board, fromI, toI) {
 
 function shiftBoardLeft(board, fromI, toI) {
 
+    if (gIsAlienFreeze) return
+
     for (var i = fromI; i <= toI; i++) {
 
         for (var j = 0; j <= board.length - 1; j++) {
@@ -91,6 +95,8 @@ function shiftBoardLeft(board, fromI, toI) {
 
 
 function shiftBoardDown(board, fromI, toI) {
+
+    if (gIsAlienFreeze) return
 
     for (var i = toI; i >= fromI; i--) {
 

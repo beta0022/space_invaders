@@ -1,6 +1,7 @@
 'use strict'
 
 const LASER_SPEED = 80
+const SUPER_LASER_SPEED = 200
 
 const LASER_SOUND = new Audio('sound/laser.wav')
 
@@ -11,6 +12,7 @@ var gHero = {
 
 var gBlowUpNegs
 var gSuperMode
+var gSuperCount = 0
 var gIntervalLaser
 
 
@@ -21,6 +23,7 @@ function createHero(board) {
     gHero.isShoot = false
     gBlowUpNegs = false
     gSuperMode = false
+    superCount((-3))
 }
 
 
@@ -53,7 +56,10 @@ function onKeyDown(event) {
             break
 
         case 'x':
+            if (gSuperCount === 0) return
+            superCount(1)
             gSuperMode = true
+            shoot(nextLocation)
             break
     }
 }
@@ -81,12 +87,22 @@ function shoot(nextLocation) {
 
     if (!gGame.isOn || gHero.isShoot) return
 
-    LASER_SOUND.play()
-    
-    updateCell(nextLocation, LASER)
-    gIntervalLaser = setInterval(function() {
-        blinkLaser(nextLocation)
-    }, LASER_SPEED)
+    if (gSuperMode) {
+
+        gIntervalLaser = setInterval(function() {
+            superModeLaser(nextLocation)
+        }, SUPER_LASER_SPEED)
+
+    } else {
+
+        LASER_SOUND.play()
+        
+        updateCell(nextLocation, LASER)
+
+        gIntervalLaser = setInterval(function() {
+            blinkLaser(nextLocation)
+        }, LASER_SPEED)
+    }
 }
 
 
@@ -95,31 +111,13 @@ function blinkLaser(nextLocation) {
     gHero.isShoot = true
 
     if (nextLocation.i === 0) {
-        clearInterval(gIntervalLaser)
         updateCell(nextLocation, '')
+        clearInterval(gIntervalLaser)
         gHero.isShoot = false
         return
     }
 
     var nextCell = getElCell({ i: nextLocation.i - 1, j: nextLocation.j })
-
-    if (gSuperMode) {
-        updateCell(nextLocation, SUPER)
-
-        gIntervalLaser = setInterval(function() {
-            blinkLaser(nextLocation)
-        }, LASER_SPEED/3)
-
-        if (nextLocation.i === 0) {
-            clearInterval(gIntervalLaser)
-            updateCell(nextLocation, '')
-            gHero.isShoot = false
-            gSuperMode = false
-        }
-
-        gSuperMode = false
-        return
-    }
 
     if (nextCell.innerText === ALIEN) {
 
@@ -131,15 +129,31 @@ function blinkLaser(nextLocation) {
 
         updateScore(10)
         gGame.aliensCount--
-        clearInterval(gIntervalLaser)
-
+        
         updateCell(nextLocation, '')
         updateCell({ i: nextLocation.i - 1, j: nextLocation.j }, '')
-
+        
         nextCell.innerText = ''
+        clearInterval(gIntervalLaser)
         gHero.isShoot = false
 
         checkWin()
+        return
+    }
+
+    if (nextCell.innerText === CANDY) {
+        updateScore(50)
+        
+        gIsAlienFreeze = true
+        setTimeout(() => gIsAlienFreeze = false, 5000)
+        
+        updateCell(nextLocation, '')
+        updateCell({ i: nextLocation.i - 1, j: nextLocation.j }, '')
+        
+        nextCell.innerText = ''
+        clearInterval(gIntervalLaser)
+        gHero.isShoot = false
+
         return
     }
 
@@ -148,6 +162,45 @@ function blinkLaser(nextLocation) {
     nextLocation.i--
     // moving to new location
     updateCell(nextLocation, LASER)
+}
+
+
+function superModeLaser(nextLocation){
+
+    updateCell(nextLocation, SUPER)
+
+    if (nextLocation.i === 0) {
+        updateCell(nextLocation, '')
+        clearInterval(gIntervalLaser)
+        gHero.isShoot = false
+        gSuperMode = false
+        return
+    }
+
+    var nextCell = getElCell({ i: nextLocation.i - 1, j: nextLocation.j })
+
+    if (nextCell.innerText === ALIEN) {
+        updateScore(10)
+        gGame.aliensCount--
+
+        updateCell(nextLocation, '')
+        updateCell({ i: nextLocation.i - 1, j: nextLocation.j }, '')
+
+        clearInterval(gIntervalLaser)
+
+        nextCell.innerText = ''
+        gHero.isShoot = false
+        gSuperMode = false
+
+        checkWin()
+        return
+    }
+
+    // moving from current location
+    updateCell(nextLocation, '')
+    // moving to new location
+    console.log({ i: nextLocation.i - 1, j: nextLocation.j });
+    updateCell({ i: nextLocation.i - 1, j: nextLocation.j }, SUPER)
 }
 
 
@@ -170,10 +223,14 @@ function blowUpNegs(pos) {
             if (gBoard[i][j].gameObject === ALIEN) {
                 negsCount++
                 updateCell({ i, j }, '')
+
+                gGame.aliensCount = gGame.aliensCount - negsCount
+                updateScore((negsCount * 10))
+
+                checkWin()
+
+                return
             }
         }
     }
-
-    gGame.aliensCount = gGame.aliensCount - negsCount
-    updateScore((negsCount * 10))
 }

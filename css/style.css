@@ -4,9 +4,14 @@
 
 
 body {
-  background-color: black;
+  background: #000000;
+  background: -moz-radial-gradient(center, #000000 0%, #885FB6 0%, #000000 100%);
+  background: -webkit-radial-gradient(center, #000000 0%, #885FB6 0%, #000000 100%);
+  background: radial-gradient(ellipse at center, #000000 0%, #885FB6 0%, #000000 100%);
+  background-attachment: fixed;
   color: white;
   text-align: center;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
 
@@ -15,13 +20,9 @@ h1 {
 }
 
 
-.start-btn {
-  font-size: 1.4rem;
-}
-
-
 .start-game {
-background-color: rgb(19, 18, 18);
+  width: 100%;
+  height: 80vh;
 }
 
 
@@ -30,17 +31,22 @@ h2 {
 }
 
 
+.super-count {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+
 .board {
   width: fit-content;
   height: fit-content;
-  /* background-color: grey; */
   margin: auto;
 }
 
 
 .cell {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   color: rgb(158, 156, 156);
   text-align: center;
   font-size: 1.8rem;
@@ -53,26 +59,36 @@ h2 {
 
 
 .ground {
-  background-color: blue;
+  background-color: rgb(158, 156, 156);
 }
 
 
 .restart-div {
-  background-color:rgb(158, 156, 156);
+  margin: auto;
 }
 
 
 .win {
-  color:blue;
+  font-size: 1.4rem;
+  color: #885FB6;
 }
 
 .game-over {
-  color:aqua
+  font-size: 1.4rem;
+  color:#885FB6;
 }
 
-
-h3 {
-  font-size: 1rem;
+button {
+  color: #000000;
+  background: #EBEBEB;
+  border-radius: 6px; 
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-size: 1.6rem;
+  width: 180px;
+  height: 60px;
+  cursor: pointer;
+  border: 1px solid #885FB6;
+  transition: 1s ease-in-out;
 }
 
 
