@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Space Invaders</title>
+    <link rel="icon" type="image/x-icon" href="img/game-icon.png">
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body onkeydown="onKeyDown(event)">
+
+    <h1>Space Invaders</h1>
+
+    <button class="start-btn" onclick="onInit()">Start</button>
+
+    <div class="start-game hide">
+        <h2>Score: <span>0</span></h2>
+        <div class="super-count">Super Laser: <span></span></div>
+        
+        <div class="board"></div>
+
+        <div class="restart-div hide">
+            <h3 class="win hide">You Win!</h3>
+            <h3 class="game-over hide">Game Over!</h3>
+            <button onclick="onInit()">Restart</button>
+        </div>
+        
+    </div>
+    
+
+    <script src="js/utils.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/hero.js"></script>
+    <script src="js/alien.js"></script>
+</body>
+
+</html>
