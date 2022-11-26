@@ -17,7 +17,7 @@ function updateScore(diff) {
     // Model
     gGame.score += diff
     // DOM
-    document.querySelector('h2 span').innerText = gGame.score
+    document.querySelector('.score span').innerText = gGame.score
 }
 
 

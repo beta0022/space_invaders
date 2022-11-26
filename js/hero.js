@@ -1,9 +1,10 @@
 'use strict'
 
 const LASER_SPEED = 80
-const SUPER_LASER_SPEED = 200
+const SUPER_LASER_SPEED = 40
 
 const LASER_SOUND = new Audio('sound/laser.wav')
+const SUPER_LASER_SOUND = new Audio('sound/super-laser.wav')
 
 var gHero = {
     pos: {i:12, j: 6},
@@ -59,6 +60,7 @@ function onKeyDown(event) {
             if (gSuperCount === 0) return
             superCount(1)
             gSuperMode = true
+            nextLocation.i--
             shoot(nextLocation)
             break
     }
@@ -89,6 +91,8 @@ function shoot(nextLocation) {
 
     if (gSuperMode) {
 
+        SUPER_LASER_SOUND.play()
+
         gIntervalLaser = setInterval(function() {
             superModeLaser(nextLocation)
         }, SUPER_LASER_SPEED)
@@ -96,8 +100,6 @@ function shoot(nextLocation) {
     } else {
 
         LASER_SOUND.play()
-        
-        updateCell(nextLocation, LASER)
 
         gIntervalLaser = setInterval(function() {
             blinkLaser(nextLocation)
@@ -131,7 +133,8 @@ function blinkLaser(nextLocation) {
         gGame.aliensCount--
         
         updateCell(nextLocation, '')
-        updateCell({ i: nextLocation.i - 1, j: nextLocation.j }, '')
+        nextLocation.i--
+        updateCell(nextLocation, LASER)
         
         nextCell.innerText = ''
         clearInterval(gIntervalLaser)
@@ -148,7 +151,8 @@ function blinkLaser(nextLocation) {
         setTimeout(() => gIsAlienFreeze = false, 5000)
         
         updateCell(nextLocation, '')
-        updateCell({ i: nextLocation.i - 1, j: nextLocation.j }, '')
+        nextLocation.i--
+        updateCell(nextLocation, LASER)
         
         nextCell.innerText = ''
         clearInterval(gIntervalLaser)
@@ -166,8 +170,7 @@ function blinkLaser(nextLocation) {
 
 
 function superModeLaser(nextLocation){
-
-    updateCell(nextLocation, SUPER)
+    gHero.isShoot = true
 
     if (nextLocation.i === 0) {
         updateCell(nextLocation, '')
@@ -184,11 +187,11 @@ function superModeLaser(nextLocation){
         gGame.aliensCount--
 
         updateCell(nextLocation, '')
-        updateCell({ i: nextLocation.i - 1, j: nextLocation.j }, '')
-
-        clearInterval(gIntervalLaser)
+        nextLocation.i--
+        updateCell(nextLocation, SUPER)
 
         nextCell.innerText = ''
+        clearInterval(gIntervalLaser)
         gHero.isShoot = false
         gSuperMode = false
 
@@ -198,9 +201,10 @@ function superModeLaser(nextLocation){
 
     // moving from current location
     updateCell(nextLocation, '')
+    nextLocation.i--
     // moving to new location
-    console.log({ i: nextLocation.i - 1, j: nextLocation.j });
-    updateCell({ i: nextLocation.i - 1, j: nextLocation.j }, SUPER)
+    updateCell(nextLocation, SUPER)
+    gSuperMode = false
 }
 
 

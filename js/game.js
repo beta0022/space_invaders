@@ -125,7 +125,7 @@ function checkWin() {
   WIN_SOUND.play()
   document.querySelector('.restart-div').classList.remove('hide')
   document.querySelector('.win').classList.remove('hide')
-      
+  
   restartGame()
 }
 

@@ -14,13 +14,15 @@
 
 <body onkeydown="onKeyDown(event)">
 
-    <h1>🚀 Space Invaders 👾</h1>
+    <h1 class="title">🚀 Space Invaders 👾</h1>
 
     <button class="start-btn" onclick="onInit()">Start</button>
 
     <div class="start-game hide">
-        <h2>Score: <span>0</span></h2>
-        <div class="super-count">Super Laser: <span></span></div>
+        <div class="info">
+            <div class="score">Score: <span>0</span></div>
+            <div class="super-count">Super Laser: <span></span></div>
+        </div>
         
         <div class="board"></div>
 
@@ -32,7 +34,7 @@
         
     </div>
     
-
+    <script src="js/extra.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/game.js"></script>
     <script src="js/hero.js"></script>
