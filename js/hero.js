@@ -13,7 +13,7 @@ var gHero = {
 
 var gBlowUpNegs
 var gSuperMode
-var gSuperCount = 0
+var gSuperCount
 var gIntervalLaser
 
 
@@ -24,6 +24,7 @@ function createHero(board) {
     gHero.isShoot = false
     gBlowUpNegs = false
     gSuperMode = false
+    gSuperCount = 0
     superCount((-3))
 }
 
@@ -130,7 +131,7 @@ function blinkLaser(nextLocation) {
         }
 
         updateScore(10)
-        gGame.aliensCount--
+        // gGame.aliensCount--
         
         updateCell(nextLocation, '')
         nextLocation.i--
@@ -184,7 +185,7 @@ function superModeLaser(nextLocation){
 
     if (nextCell.innerText === ALIEN) {
         updateScore(10)
-        gGame.aliensCount--
+        // gGame.aliensCount--
 
         updateCell(nextLocation, '')
         nextLocation.i--
@@ -228,7 +229,7 @@ function blowUpNegs(pos) {
                 negsCount++
                 updateCell({ i, j }, '')
 
-                gGame.aliensCount = gGame.aliensCount - negsCount
+                // gGame.aliensCount = gGame.aliensCount - negsCount
                 updateScore((negsCount * 10))
 
                 checkWin()

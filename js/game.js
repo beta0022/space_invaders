@@ -28,7 +28,7 @@ function onInit() {
     console.log('Good Luck!')
 
     gGame.isOn = true
-    gGame.aliensCount = ALIENS_ROW_COUNT * ALIENS_ROW_LENGTH
+    gGame.aliensCount = 0
     gGame.score = 0
     updateScore(0)
 
@@ -118,7 +118,20 @@ function updateCell(pos, gameObject = null) {
 
 function checkWin() { 
 
-  if (gGame.aliensCount !== 0) return
+  for (var i = 0; i < gBoard.length; i++) {
+
+    for (var j = 0; j < gBoard[0].length; j++) {
+    
+        if (gBoard[i][j].gameObject === ALIEN){
+          gGame.aliensCount++
+        }
+      }
+    }
+
+  if (gGame.aliensCount !== 0) {
+    gGame.aliensCount = 0
+    return
+  }
 
   console.log('You Won!')
 
